@@ -1,0 +1,29 @@
+version: "3"
+services:
+  pg_primary:
+    build:
+      context: ./docker/pg
+      dockerfile: Dockerfile.primary
+    command: postgres -c log_destination=stderr -c log_statement=all
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./pg_primary_data:/var/lib/postgresql/data
+    ports:
+      - "5445:5432"
+      
+  pg_readonly:
+    build:
+      context: ./docker/pg
+      dockerfile: Dockerfile.readonly
+    command: postgres -c log_destination=stderr -c log_statement=all
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./pg_readonly_data:/var/lib/postgresql/data
+    depends_on:
+      - pg_primary
+    ports:
+      - "5446:5432"

@@ -1,0 +1,8 @@
+env
+venv
+
+.env
+.venv
+
+pg_primary_data
+pg_readonly_data
